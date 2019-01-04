@@ -2,7 +2,7 @@ module.exports = {
   STORE_KEY: 'a56z0fzrNpl^2',
   screen :'',
   time : 0,
-  BASE_URL: 'http://139.59.76.223/monotech/webservice/',
+  BASE_URL: 'http://139.59.76.223/studio54/api/',
   Signin :'Signin',
   Signup :'Signup',
   front_main :'front_main',

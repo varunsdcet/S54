@@ -31,7 +31,7 @@ resPress = (resId,resName) => {
   
   }
    buttonClickListener = () =>{
-    this.props.navigation.navigate('Signup')
+  
 };
 
   render() {

@@ -1,17 +1,34 @@
-import React, {Component} from 'react';
-import { StyleSheet, Text,FlatList, View ,Image,Alert,Dimensions ,TextInput,TouchableOpacity} from 'react-native';
+          import React, {Component} from 'react';
+import { StyleSheet, Text,FlatList, View,Modal ,Image,Alert,Dimensions ,TextInput,TouchableOpacity} from 'react-native';
 import Video from 'react-native-video';
 const window = Dimensions.get('window');
 import Container from './Container.js';
 import Button from 'react-native-button';
 const { width, height } = Dimensions.get('window');
-
+import ImageViewer from 'react-native-image-zoom-viewer';
 
 const equalWidth =  (width -20 )
 const GLOBAL = require('./Global');
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+const images = [{
+    // Simplest usage.
+    url: 'https://avatars2.githubusercontent.com/u/7970947?v=3&s=460'
+   
+}, 
+
+{
+    // Simplest usage.
+    url: 'https://avatars2.githubusercontent.com/u/7970947?v=3&s=460',
+ 
+    
+}, 
+
+
+]
 type Props = {};
-export default class EventList extends Component {
+
+
+export default class ZoomList extends Component {
 
 
 constructor(props) {
@@ -36,74 +53,30 @@ constructor(props) {
 
  
 
-      <View style={{ height : 195,  width : equalWidth ,margin : 10}}>
+      <View style={{flex :1,flexDirection :'row', height : 150,  width : equalWidth ,margin : 10}}>
 
 
         
         
       <Image
-          style={{ width: equalWidth, height : 195,margin :0 }}
+          style={{ width: 150, height : 150,margin :0 }}
           source={{ uri: itemData.item.image }}
 
         
 
         />
+       
 
-         <View style = {{position: 'absolute', right: 0,marginTop :5,backgroundColor :'#ce8c04',padding :5 ,borderTopLeftRadius : 10,borderTopLeftRadius : 10}}>
+
+        <Text  style = {{margin:3,width : width - 170,color :'white',marginTop : 14,fontSize :14 }}
+        numberOfLines={4} >After visiting an event listing, people most often open Google Images and YouTube. Why? They’re looking for photos and videos </Text>
       
-        <View style = {{flexDirection :'row'}}>
-       <Image style={{width :15,height:15 , resizeMode: 'contain'}}
-           source={require('./eventdate.png')} />
-
-      <Text style = {{marginLeft :3,color :'#ffffff' ,fontSize : 12}}>
-       {itemData.item.event_date }
-
-
-
-        </Text>
-        </View>
-
-           <View style = {{flexDirection :'row',marginTop :5}}>
-           <Image style={{width :15,height:15 , resizeMode: 'contain'}}
-           source={require('./eventtime.png')} />
-          <Text style = {{marginLeft : 3,color :'#ffffff' ,fontSize : 12}}>
-       {itemData.item.event_time }
-
-
-
-        </Text>
-        </View>
-
-        </View>
        
-       <View style = {{marginTop : -40,height : 50,backgroundColor:'rgba(0,0,0,0.7)',flex : 1,flexDirection :'row'}}>
-       
-       <Text style = {{margin : 5,color :'#ce8c04' ,fontSize : 20}}>
-       {itemData.item.title }
 
+      </View>
 
-
-        </Text>
-
-         
-        <View style = {{position: 'absolute', right: 5,marginTop :5,backgroundColor :'#ce8c04',padding :3 ,borderRadius : 12}}>
-       <TouchableOpacity  onPress={() =>  this.props.navigation.navigate('BookTable')}>
-      <Text style = {{margin : 5,color :'#ffffff' ,fontSize : 12}}>
-       BOOK TABLE
-
-
-
-        </Text>
-        </TouchableOpacity>
-        </View>
       
-
-        </View>
-
-       
-
-    
-         </View>
+        
 
 
       
@@ -113,10 +86,12 @@ constructor(props) {
     )
   }
  componentWillMount() {
-      this.getMoviesFromApiAsync()
+     
     
   }
-
+goback = () =>{
+  this.props.navigation.goBack()
+}
   getMoviesFromApiAsync = () => {
       
        const url = 'http://139.59.76.223/test_api/index.php';
@@ -161,16 +136,17 @@ constructor(props) {
           
         <View style={styles.content}>
 
-        <KeyboardAwareScrollView >
+        
 
-     <FlatList style= {{backgroundColor:'rgba(0,0,0,0.2)',flexGrow:0}}
-          data={this.state.moviesList}
-          numColumns={1}
-          keyExtractor={this._keyExtractor}
-          renderItem={this.renderRowItem}
-        />
+   <Modal visible={true} transparent={true}>
+                <ImageViewer imageUrls={images}
+                enableSwipeDown = {true}
+                swipeDownThreshold = {300}
+               
+                />
+            </Modal>
 
-        </KeyboardAwareScrollView>
+       
       
        </View>
       

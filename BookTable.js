@@ -20,7 +20,7 @@ constructor(props) {
       isScreen :'',
         moviesList: [],
         date :'',
-        time :'',
+        times :'',
      
     }
   }
@@ -227,11 +227,33 @@ constructor(props) {
          Time
           </Text>
          
-          <View style={{justifyContent: 'center',height : 40,backgroundColor :'rgba(0,0,0,0.5)',width :width - 20,marginLeft :10}}>
-           <Text style = {{width :width - 36,color :'white' ,fontSize : 18,marginLeft :18}}>
-           7.00 Am
-          </Text>
-           </View>
+          <View style={{ height:30, backgroundColor: 'transparent', marginLeft: 3 }}>
+            <DatePicker date={this.state.times} showIcon={false} placeholder="" mode="time" format="DD-MM-YYYY" confirmBtnText="Confirm"
+        cancelBtnText="Cancel"
+              customStyles={{
+                dateInput: {
+                  borderWidth: 0,
+                  height: 40,
+                  width: width - 36,
+
+                
+                },
+                dateText: {
+                  marginTop: 3,
+                  color: 'white',
+                  fontSize: 18,
+
+                },
+                placeholderText: {
+                  marginTop: 3,
+                  marginLeft: 0,
+                  color: 'white',
+                  fontSize: 18,
+                }
+              }
+              }
+              onDateChange={(date) => { this.setState({ times: date }) }} placeholderTextColor="white" underlineColorAndroid={'rgba(0,0,0,0)'} style={{ height: 40, width: width - 20, marginLeft :10, backgroundColor: 'rgba(0,0,0,0.5)' }}></DatePicker>
+          </View>
 
            <Text style = {{margin :10,color :'white' ,fontSize : 18}}>
           Personal details.

@@ -14,7 +14,18 @@ export default styles = StyleSheet.create({
      flexDirection: 'row'
      
     },
+ otpImage: {
+         width: 100,
+         height: 100,
+         marginLeft : 40 ,
+         marginTop : 90,
 
+    },
+
+    containers: {
+        flex: 1,
+        
+    },
    
     textWidth : {
      width : window.width,

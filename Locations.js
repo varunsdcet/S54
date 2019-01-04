@@ -4,25 +4,37 @@ import Video from 'react-native-video';
 const window = Dimensions.get('window');
 import Container from './Container.js';
 import Button from 'react-native-button';
+import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
+import { showLocation } from 'react-native-map-link';
+import { Popup } from 'react-native-map-link';
+
+
+  const markers = [
+  {
+    latitude: 45.65,
+    longitude: -78.90,
+    title: 'Foo Place',
+    subtitle: '1234 Foo Drive'
+  }
+];
 
 const GLOBAL = require('./Global');
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 type Props = {};
 export default class Location extends Component {
-   static navigationOptions = ({ navigation }) => {
-    return {
-       header: () => null
-    } 
-}
+  
 
 
 constructor(props) {
     super(props)
     this.state = {
-      isScreen :''
+      isScreen :'',
+      isVisible: true
      
     }
   }
+
+
  changeComponent = (component) =>{
     this.setState({componentSelected: component});
   }
@@ -30,177 +42,92 @@ resPress = (resId,resName) => {
    this.setState({isScreen: '1'});
   
   }
+ markerClick = () =>{
+ 
+  showLocation({
+    latitude: 38.8976763,
+    longitude: -77.0387185,
+   // not optional if sourceLatitude is specified
+    title: 'Studio 54',  // optional
+    googleForceLatLon: false,  // optionally force GoogleMaps to use the latlon for the query instead of the title
+      // optionally specify the google-place-id
+    dialogTitle: 'Please Select', // optional (default: 'Open in Maps')
+    dialogMessage: '', // optional (default: 'What app would you like to use?')
+    cancelText: 'Cancel', // optional (default: 'Cancel')
+    appsWhiteList: ['noga','moovit','citymapper','transit','apple-maps','google-maps','uber','lyft'] ,// optionally you can set which apps to show (default: will show all supported apps installed on device)
+      // optionally specify specific app to use
+});
+};
+
    buttonClickListener = () =>{
     this.props.navigation.navigate('Home')
 };
 
+  
+
   render() {
     return (
-      <View style={styles.container}>
-    
-      <View style={{ width: window.width, height: window.height, flexDirection: 'column' }}>
-        <Container/>
-        
-        { GLOBAL.screen == '' && (
-
-          
-        <View style={styles.content}>
-
-        <KeyboardAwareScrollView >
-
-         <Image style={styles.logoImage1}
-           source={require('./logo.png')} />
-
-
-           <View style = {{height : 750,width : window.width - 20,marginTop : 40 ,marginLeft :10 , marginRight :10}}>
-           
-           <Image style={styles.logoImage2}
-           source={require('./signupbg.png')} />
-           <View  style  = {{width : 150,height : 40 ,marginTop :130 ,marginLeft : 10 }}>
-           <Text style = {{fontWeight: 'bold', marginTop : 40,fontSize: 15,textDecorationLine: 'underline',alignSelf: 'flex-end',width :150 ,height : 40 ,color :'#ce8c04'}}>
-           LOGIN
-           </Text>
-
-
-           </View>
-           
-           <View style = {{marginLeft : 15 ,marginTop : 22 ,marginRight :15 }}>
-
-           <View style = {{paddingTop : 30,flexDirection :'row', borderBottomColor: 'rgba(255,255,255,0.4)',
-    borderBottomWidth: 1,
-    marginBottom: 20}}>
-             
-          <Image style={{marginTop : 8,width :25,height:20 , resizeMode: 'contain'}}
-           source={require('./email.png')} />
-
-           <TextInput
-        style={{marginLeft : 10,width : window.width - 90,height: 40,color:'white',fontSize: 15}}
-        placeholder="Email"
-        placeholderTextColor={'white'}
-
-        
-      />
-           </View>
-
-           <View style = {{padding : 5,flexDirection :'row', borderBottomColor: 'rgba(255,255,255,0.4)',
-    borderBottomWidth: 1,
-    marginBottom: 20}}>
-             
-          <Image style={{marginTop : 8,width :25,height:20 , resizeMode: 'contain'}}
-           source={require('./password.png')} />
-
-           <TextInput
-        style={{marginLeft : 10,width : window.width - 90,height: 40,color:'white',fontSize: 15}}
-        placeholder="Password"
-        secureTextEntry={true}
-        placeholderTextColor={'white'}
-
-        
-      />
-          </View>
-           <Button
-           containerStyle={{marginLeft : 25,marginTop : 5,marginBottom : 5, marginRight:25, padding:10, height:40, overflow:'hidden', borderRadius:20, backgroundColor: '#ce8c04'}}
-   
-            style={{fontSize: 14, color: 'black'}}
-          onPress={this.buttonClickListener}
+ 
+  <View style={styles.container}>
+        <MapView style={styles.map}
+        provider={PROVIDER_GOOGLE}
+ 
+          initialRegion={{
+              latitude: 25.276987,
+              longitude: 55.296249,
+              latitudeDelta: 5.0,
+              longitudeDelta: 5.0,
+          }}
         >
+
+
+        <MapView.Marker
+            coordinate={{latitude: 25.276987,
+            longitude: 55.296249}}
+           
+             onPress={() => this.markerClick()}
+         />
+      </MapView>
+     
+      <View style = {{flexDirection :'column',backgroundColor :'rgba(0,0,0,1.0)' ,marginTop : window.height - 215 ,height :150}}>
+      <Text style = {{padding :5,fontWeight: 'bold',textDecorationLine: 'underline',color :'white' }}>
+      Studio 54
+      </Text>
+      <Text style = {{padding :15,color :'white' }}>
+      Studio 54 ,197 Bhrampuri Muzaffarnagar
+      </Text>
        
-        LOGIN
-        </Button>
 
-         
-         <Text style = {{textAlign:'center',marginLeft : 15 ,marginTop : 8 ,height : 30 ,color :'rgba(255,255,255,0.5)'}}>
-         FORGOT PASSWORD ?
-         </Text>
-          <View style = {{marginLeft : window.width/2 - 35,width :30 ,height :30 ,borderRadius :30,backgroundColor:'white' }}>
-          <Text style = {{marginTop: 7,textAlign:'center' ,color :'black'}}>
-          OR
-         </Text>
-         </View>
-                   <TouchableOpacity  onPress={() =>  this.props.navigation.navigate('Signup')}>
-
-
-                      <View style={styles.facebookColor}>
-
-                           <Image style={styles.facebookicon}
-                           source={require('./facebook.png')} />
-
-                         <Text style={styles.textColor} >
-                                 
-                                 Facebook Login
-                                   </Text>
-
-
-                        </View>
-
-                   </TouchableOpacity>
-
-
-
-
-          <TouchableOpacity  onPress={() =>  this.props.navigation.navigate('Signup')}>
-
-
-                      <View style={styles.gmailColor}>
-
-                           <Image style={styles.gmailIcon}
-                           source={require('./gmail.png')} />
-
-                         <Text style={styles.textColor} >
-                                 
-                                 Gmail Login
-                                   </Text>
-
-
-                        </View>
-
-                   </TouchableOpacity>
-
-                     </View>
-             
-      <Text style={styles.createaccount} >
-        <Text style={styles.account} >
-        Don't  have an account ? 
-        </Text>
-         Create Account
-        </Text>
-
-
-
-
-           </View>
-
-            </KeyboardAwareScrollView>
-      
-       </View>
-      
-
-       )}
-
-
-        { GLOBAL.screen == '1' && (
-        <View style={styles.content}>
-
-
-         
-         <Signup/>
-      
-
-         
-      
-       </View>
-       )}
-        </View>
-    
       </View>
+     
+
+
+
+
+
+
+
+
+ </View>
+      
+    
+     
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
+ container: {
     flex: 1,
+    
   },
+    map: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 150,
+    },
   video: {
     position: 'relative',
     width :  window.width,

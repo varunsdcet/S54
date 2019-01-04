@@ -74,7 +74,7 @@ resPress = (resId,resName) => {
 
            </View>
             </TouchableOpacity>
-
+         <TouchableOpacity  onPress={() =>  this.props.navigation.navigate('TimeLine')}>
            <View style = {{marginLeft :window.width - 90,height : 90 ,width :90 }}>
            <Image style={{marginLeft : 30,marginTop : 30,width :25,height:25 , resizeMode: 'contain'}}
            source={require('./photo.png')} />
@@ -85,7 +85,7 @@ resPress = (resId,resName) => {
            </Text>
 
            </View>
-
+            </TouchableOpacity>
 
            <View style = {{marginLeft :window.width - 90,height : 90 ,width :90 }}>
            <Image style={{marginLeft : 30,marginTop : 30,width :25,height:25 , resizeMode: 'contain'}}
@@ -98,7 +98,7 @@ resPress = (resId,resName) => {
 
            </View>
 
-
+          <TouchableOpacity  onPress={() =>  this.props.navigation.navigate('Notification')}>
            <View style = {{marginLeft :window.width - 90,height : 90 ,width :90 }}>
            <Image style={{marginLeft : 30,marginTop : 30,width :25,height:25 , resizeMode: 'contain'}}
            source={require('./notification.png')} />
@@ -109,8 +109,9 @@ resPress = (resId,resName) => {
            </Text>
 
            </View>
+           </TouchableOpacity>
 
-          <TouchableOpacity  onPress={() =>  this.props.navigation.navigate('Location')}>
+          <TouchableOpacity  onPress={() =>  this.props.navigation.navigate('Locations')}>
            <View style = {{marginLeft :window.width - 90,height : 90 ,width :90 }}>
            <Image style={{marginLeft : 30,marginTop : 30,width :25,height:25 , resizeMode: 'contain'}}
            source={require('./location.png')} />

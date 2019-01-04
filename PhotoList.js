@@ -7,11 +7,11 @@ import Button from 'react-native-button';
 const { width, height } = Dimensions.get('window');
 
 
-const equalWidth =  (width -20 )
+const equalWidth =  (width/2 )
 const GLOBAL = require('./Global');
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 type Props = {};
-export default class EventList extends Component {
+export default class PhotoList extends Component {
 
 
 constructor(props) {
@@ -34,79 +34,19 @@ constructor(props) {
     return (
 
 
- 
+ <TouchableOpacity  onPress={() =>  this.props.navigation.navigate('ZoomList')}>
 
-      <View style={{ height : 195,  width : equalWidth ,margin : 10}}>
-
-
-        
-        
-      <Image
-          style={{ width: equalWidth, height : 195,margin :0 }}
+       <View style={{backgroundColor: 'rgba(0, 0, 0, 0.1)', width: equalWidth - 8, height: 150, flexDirection: 'row', marginLeft: 5,marginTop: 5 }}>
+        <Image
+          style={{ width: equalWidth - 8, height: 150, position: 'absolute' }}
           source={{ uri: itemData.item.image }}
-
-        
-
         />
 
-         <View style = {{position: 'absolute', right: 0,marginTop :5,backgroundColor :'#ce8c04',padding :5 ,borderTopLeftRadius : 10,borderTopLeftRadius : 10}}>
-      
-        <View style = {{flexDirection :'row'}}>
-       <Image style={{width :15,height:15 , resizeMode: 'contain'}}
-           source={require('./eventdate.png')} />
-
-      <Text style = {{marginLeft :3,color :'#ffffff' ,fontSize : 12}}>
-       {itemData.item.event_date }
-
-
-
-        </Text>
-        </View>
-
-           <View style = {{flexDirection :'row',marginTop :5}}>
-           <Image style={{width :15,height:15 , resizeMode: 'contain'}}
-           source={require('./eventtime.png')} />
-          <Text style = {{marginLeft : 3,color :'#ffffff' ,fontSize : 12}}>
-       {itemData.item.event_time }
-
-
-
-        </Text>
-        </View>
-
-        </View>
-       
-       <View style = {{marginTop : -40,height : 50,backgroundColor:'rgba(0,0,0,0.7)',flex : 1,flexDirection :'row'}}>
-       
-       <Text style = {{margin : 5,color :'#ce8c04' ,fontSize : 20}}>
-       {itemData.item.title }
-
-
-
-        </Text>
-
          
-        <View style = {{position: 'absolute', right: 5,marginTop :5,backgroundColor :'#ce8c04',padding :3 ,borderRadius : 12}}>
-       <TouchableOpacity  onPress={() =>  this.props.navigation.navigate('BookTable')}>
-      <Text style = {{margin : 5,color :'#ffffff' ,fontSize : 12}}>
-       BOOK TABLE
+      </View>
 
 
-
-        </Text>
-        </TouchableOpacity>
-        </View>
-      
-
-        </View>
-
-       
-
-    
-         </View>
-
-
-      
+      </TouchableOpacity>
     
    
      
@@ -163,9 +103,9 @@ constructor(props) {
 
         <KeyboardAwareScrollView >
 
-     <FlatList style= {{backgroundColor:'rgba(0,0,0,0.2)',flexGrow:0}}
+     <FlatList style= {{flexGrow:0}}
           data={this.state.moviesList}
-          numColumns={1}
+          numColumns={2}
           keyExtractor={this._keyExtractor}
           renderItem={this.renderRowItem}
         />

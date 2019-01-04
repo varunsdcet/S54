@@ -6,11 +6,15 @@ import TimeLine from './TimeLine.js';
 import Landing from './Landing.js';
 import Home from './Home.js';
 import Menu from './Menu.js';
-import Location from './Locations.js';
+
+import Locations from './Locations.js';
 import Media from './Media.js';
 import BookTable from './BookTable.js';
 import Partner from './Partner.js';
 import EventList from './EventList.js';
+import Notification from './Notification.js';
+import PhotoList from './PhotoList.js';
+import ZoomList from './ZoomList.js';
 import {NavigationActions} from 'react-navigation';
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View ,Button} from 'react-native';
@@ -23,7 +27,7 @@ const StackNavigator = createStackNavigator({
    Landing: { screen: Landing },
    Signup: { screen: Signup },
     Home: { screen: Home },
-    Location: { screen: Location },
+   
      Menu: { screen: Menu ,
  navigationOptions: ({ navigation }) => ({
  	 headerTintColor: '#ce8c04',
@@ -58,6 +62,28 @@ const StackNavigator = createStackNavigator({
  
   }),
   },
+   Notification: { screen: Notification ,
+ navigationOptions: ({ navigation }) => ({
+   headerTintColor: '#ce8c04',
+     title: 'NOTIFICATION',
+      headerStyle: {
+      backgroundColor: 'black'
+
+    },
+ 
+  }),
+  },
+  Locations: { screen: Locations ,
+ navigationOptions: ({ navigation }) => ({
+   headerTintColor: '#ce8c04',
+     title: 'STUDIO54',
+      headerStyle: {
+      backgroundColor: 'black'
+
+    },
+ 
+  }),
+  },
     Media: { screen: Media ,
  navigationOptions: ({ navigation }) => ({
  	 headerTintColor: '#ce8c04',
@@ -80,7 +106,41 @@ const StackNavigator = createStackNavigator({
  
   }),
   },
-   TimeLine: { screen: TimeLine },
+
+  PhotoList: { screen: PhotoList ,
+ navigationOptions: ({ navigation }) => ({
+   headerTintColor: '#ce8c04',
+     title: 'PhotoList',
+      headerStyle: {
+      backgroundColor: 'black'
+
+    },
+ 
+  }),
+  },
+  ZoomList: { screen: ZoomList ,
+ navigationOptions: ({ navigation }) => ({
+   headerTintColor: '#ce8c04',
+     title: 'PhotoList',
+      headerStyle: {
+      backgroundColor: 'black'
+
+    },
+ 
+  }),
+  },
+
+  TimeLine: { screen: TimeLine ,
+ navigationOptions: ({ navigation }) => ({
+   headerTintColor: '#ce8c04',
+     title: 'PHOTOS',
+      headerStyle: {
+      backgroundColor: 'black'
+
+    },
+ 
+  }),
+  },
    
 });
 

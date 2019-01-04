@@ -23,7 +23,7 @@ constructor(props) {
 
  resPress = (resId,resName) => {
   this.setState({isVideoPlaying:false})
-  this.props.navigation.navigate('BookTable')
+  this.props.navigation.navigate('Signup')
   
   }
 
@@ -56,7 +56,7 @@ constructor(props) {
        </View>
         </View>
       </TouchableOpacity>
-       <TouchableOpacity  onPress={() =>  this.props.navigation.navigate('Login')}>
+       <TouchableOpacity  onPress={() =>  this.props.navigation.navigate('Home')}>
         <View style={{ width: 375, height: window.height/2, flexDirection: 'row' }}>
         {this.state.isVideoPlaying && (
         <Video
