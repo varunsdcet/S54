@@ -66,6 +66,8 @@ resPress = (resId,resName) => {
   
 
   render() {
+    
+    
     return (
  
   <View style={styles.container}>
@@ -73,8 +75,8 @@ resPress = (resId,resName) => {
         provider={PROVIDER_GOOGLE}
  
           initialRegion={{
-              latitude: 25.276987,
-              longitude: 55.296249,
+              latitude: GLOBAL.latiude,
+              longitude: GLOBAL.longitude,
               latitudeDelta: 5.0,
               longitudeDelta: 5.0,
           }}
@@ -82,8 +84,8 @@ resPress = (resId,resName) => {
 
 
         <MapView.Marker
-            coordinate={{latitude: 25.276987,
-            longitude: 55.296249}}
+            coordinate={{latitude: GLOBAL.latiude,
+            longitude: GLOBAL.longitude}}
            
              onPress={() => this.markerClick()}
          />
@@ -94,7 +96,7 @@ resPress = (resId,resName) => {
       Studio 54
       </Text>
       <Text style = {{padding :15,color :'white' }}>
-      Studio 54 ,197 Bhrampuri Muzaffarnagar
+      {GLOBAL.address}
       </Text>
        
 

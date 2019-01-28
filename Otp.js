@@ -9,12 +9,8 @@ import DeviceInfo from 'react-native-device-info';
 const GLOBAL = require('./Global');
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 type Props = {};
-export default class Signup extends Component {
-   static navigationOptions = ({ navigation }) => {
-    return {
-       header: () => null
-    } 
-}
+export default class Otp extends Component {
+ 
 
 
 constructor(props) {
@@ -42,12 +38,15 @@ resPress = (resId,resName) => {
 
     if (this.state.username == ''){
       alert('Please Enter Username')
-    }    else if (this.state.password == ''){
-      alert('Please Enter Password')
-    }  else if (this.state.status == false){
+    } else if (this.state.username != GLOBAL.otps){
+       alert('Otp not Match')
+    }
+
+
+       else if (this.state.status == false){
       alert('Please Connect to Internet')
     }  else {
-      const url = GLOBAL.BASE_URL +  GLOBAL.Signin
+      const url = GLOBAL.BASE_URL +  GLOBAL.Signup
       this.showLoading()
       fetch(url, {
   method: 'POST',
@@ -55,8 +54,10 @@ resPress = (resId,resName) => {
     'Content-Type': 'application/json',
   },
   body: JSON.stringify({
-    phone: this.state.username,
-    password: this.state.password,
+    name: GLOBAL.username,
+    mobile: GLOBAL.mobile,
+    email: GLOBAL.email,
+    password: GLOBAL.password,
     deviceID: DeviceInfo.getUniqueID(),
     deviceType: Platform.OS,
     deviceToken: '',
@@ -66,7 +67,7 @@ resPress = (resId,resName) => {
     device_memory: DeviceInfo.getTotalMemory(),
     has_notch: DeviceInfo.hasNotch(),
     manufacture: DeviceInfo.getManufacturer(),
-    ip_address: this.state.ipAdd,
+    ip_address: '',
 
   }),
 }).then((response) => response.json())
@@ -77,11 +78,12 @@ resPress = (resId,resName) => {
        if (responseJson.status == true) {
 
       this.setState({ results: responseJson.user_detail })
-       AsyncStorage.setItem('userID', this.state.results.user_id);
+          AsyncStorage.setItem('userID', this.state.results.user_id);
       AsyncStorage.setItem('name', this.state.results.name);
       AsyncStorage.setItem('email', this.state.results.email);
       AsyncStorage.setItem('mobile', this.state.results.mobile);
      AsyncStorage.setItem('image', this.state.results.image);
+      
         this.props.navigation.navigate('Home')
        }else {
         alert('Please enter Valid Credentials.')
@@ -105,7 +107,7 @@ showLoading() {
     }
 
     componentDidMount() {
-      DeviceInfo.getUniqueID()
+     
     NetInfo.isConnected.addEventListener('connectionChange', this.handleConnectionChange);
 
     NetInfo.isConnected.fetch().done(
@@ -150,123 +152,30 @@ handleConnectionChange = (isConnected) => {
            source={require('./logo.png')} />
 
 
-           <View style = {{height : 750,width : window.width - 20,marginTop : 40 ,marginLeft :10 , marginRight :10}}>
-           
-           <Image style={styles.logoImage2}
-           source={require('./signupbg.png')} />
-           <View  style  = {{width : 150,height : 40 ,marginTop :130 ,marginLeft : 10 }}>
-           <Text style = {{fontWeight: 'bold', marginTop : 40,fontSize: 15,textDecorationLine: 'underline',alignSelf: 'flex-end',width :150 ,height : 40 ,color :'#ce8c04'}}>
-           LOGIN
+           <Text style = {{margin : 10,marginTop : 200,fontWeight :'bold' ,color : 'white',fontSize: 18}}>
+           Please Enter Otp From Your Registered Email Id
+
            </Text>
 
-
-           </View>
-           
-           <View style = {{marginLeft : 15 ,marginTop : 22 ,marginRight :15 }}>
-
-           <View style = {{paddingTop : 30,flexDirection :'row', borderBottomColor: 'rgba(255,255,255,0.4)',
-    borderBottomWidth: 1,
-    marginBottom: 20}}>
-             
-          <Image style={{marginTop : 8,width :25,height:20 , resizeMode: 'contain'}}
-           source={require('./email.png')} />
-
-           <TextInput
-        style={{marginLeft : 10,width : window.width - 90,height: 40,color:'white',fontSize: 15}}
-        placeholder="Email"
+             <TextInput
+        style={{marginLeft : 15,borderBottomWidth: 1,
+    marginBottom: 20,marginTop : 30,fontWeight :'bold',width : window.width - 30,height: 40,color:'white',fontSize: 14}}
+        placeholder="Enter Otp"
         placeholderTextColor={'white'}
         onChangeText={(text) => this.setState({username:text})} 
         
       />
-           </View>
 
-           <View style = {{padding : 5,flexDirection :'row', borderBottomColor: 'rgba(255,255,255,0.4)',
-    borderBottomWidth: 1,
-    marginBottom: 20}}>
-             
-          <Image style={{marginTop : 8,width :25,height:20 , resizeMode: 'contain'}}
-           source={require('./password.png')} />
-
-           <TextInput
-        style={{marginLeft : 10,width : window.width - 90,height: 40,color:'white',fontSize: 15}}
-        placeholder="Password"
-        secureTextEntry={true}
-        placeholderTextColor={'white'}
-        onChangeText={(text) => this.setState({password:text})} 
-        
-      />
-          </View>
-           <Button
-           containerStyle={{marginLeft : 25,marginTop : 5,marginBottom : 5, marginRight:25, padding:10, height:40, overflow:'hidden', borderRadius:20, backgroundColor: '#ce8c04'}}
+      <Button
+           containerStyle={{marginLeft : 25,marginTop : 20,marginBottom : 5, marginRight:25, padding:10, height:40, overflow:'hidden', borderRadius:20, backgroundColor: '#ce8c04'}}
    
             style={{fontSize: 14, color: 'black'}}
           onPress={this.buttonClickListener}
         >
        
-        LOGIN
+        SUBMIT
         </Button>
 
-         
-         <Text style = {{textAlign:'center',marginLeft : 15 ,marginTop : 8 ,height : 30 ,color :'rgba(255,255,255,0.5)'}}>
-         FORGOT PASSWORD ?
-         </Text>
-          <View style = {{marginLeft : window.width/2 - 35,width :30 ,height :30 ,borderRadius :30,backgroundColor:'white' }}>
-          <Text style = {{marginTop: 7,textAlign:'center' ,color :'black'}}>
-          OR
-         </Text>
-         </View>
-                   <TouchableOpacity  onPress={() =>  this.props.navigation.navigate('Signup')}>
-
-
-                      <View style={styles.facebookColor}>
-
-                           <Image style={styles.facebookicon}
-                           source={require('./facebook.png')} />
-
-                         <Text style={styles.textColor} >
-                                 
-                                 Facebook Login
-                                   </Text>
-
-
-                        </View>
-
-                   </TouchableOpacity>
-
-
-
-
-          <TouchableOpacity  onPress={() =>  this.props.navigation.navigate('Signup')}>
-
-
-                      <View style={styles.gmailColor}>
-
-                           <Image style={styles.gmailIcon}
-                           source={require('./gmail.png')} />
-
-                         <Text style={styles.textColor} >
-                                 
-                                 Gmail Login
-                                   </Text>
-
-
-                        </View>
-
-                   </TouchableOpacity>
-
-                     </View>
-         <TouchableOpacity  onPress={() =>  this.props.navigation.navigate('Login')}>     
-      <Text style={styles.createaccount} >
-        <Text style={styles.account} >
-        Don't  have an account ? 
-        </Text>
-         Create Account
-        </Text>
-
-         </TouchableOpacity>
-
-
-           </View>
 
             </KeyboardAwareScrollView>
       

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { StyleSheet, Text,FlatList, View ,Image,Alert,Dimensions ,TextInput,TouchableOpacity} from 'react-native';
+import { StyleSheet, Text,FlatList,Linking, View ,Image,Alert,Dimensions ,TextInput,TouchableOpacity} from 'react-native';
 import Video from 'react-native-video';
 const window = Dimensions.get('window');
 import Container from './Container.js';
@@ -50,17 +50,18 @@ constructor(props) {
         />
         <View style = {{backgroundColor : 'rgba(0,0,0,0.5)',flexDirection :'column',flex :1}}>
         <Text  style = {{margin:3,width : width - 170,color :'white',marginTop : 8,fontSize :14 }}>
-         23 Dec 2015
+         {itemData.item.date}
         
         </Text>
 
 
         <Text  style = {{margin:3,width : width - 170,color :'white',marginTop : 14,fontSize :14 }}
-        numberOfLines={4} >After visiting an event listing, people most often open Google Images and YouTube. Why? They’re looking for photos and videos </Text>
-      
+        numberOfLines={4} > {itemData.item.description} </Text>
+       <TouchableOpacity   onPress={() => this.resPress(itemData.item.link, '')}>
           <Text style ={{color :'white',margin : 10 ,fontSize :15}}>
           Continue Reading
           </Text>
+          </TouchableOpacity>
 
       </View>
 
@@ -79,9 +80,22 @@ constructor(props) {
     
   }
 
+  resPress = (resId,resName) => {
+ 
+    Linking.canOpenURL(resId).then(supported => {
+      if (supported) {
+        Linking.openURL(resId);
+      } else {
+        console.log("Don't know how to open URI: " + resId);
+      }
+    });
+   
+  
+  }
+
   getMoviesFromApiAsync = () => {
       
-       const url = 'http://139.59.76.223/test_api/index.php';
+      const url = GLOBAL.BASE_URL +  GLOBAL.media
      alert(url)
       fetch(url, {
   method: 'POST',

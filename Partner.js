@@ -59,7 +59,7 @@ constructor(props) {
 
   getMoviesFromApiAsync = () => {
       
-       const url = 'http://139.59.76.223/test_api/index.php';
+       const url = GLOBAL.BASE_URL +  GLOBAL.partners
      alert(url)
       fetch(url, {
   method: 'POST',

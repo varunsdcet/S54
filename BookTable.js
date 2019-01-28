@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
-import { StyleSheet, Text,FlatList, View ,Image,Alert,Dimensions ,TextInput,TouchableOpacity} from 'react-native';
+import { StyleSheet, Text,FlatList, View,NetInfo,ActivityIndicator ,Image,Alert,Dimensions ,TextInput,TouchableOpacity} from 'react-native';
 import Video from 'react-native-video';
 const window = Dimensions.get('window');
 import Container from './Container.js';
 import Button from 'react-native-button';
 const { width, height } = Dimensions.get('window');
 import DatePicker from 'react-native-datepicker';
-
+import DeviceInfo from 'react-native-device-info';
 const equalWidth =  (width -20 )
 const GLOBAL = require('./Global');
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -21,6 +21,12 @@ constructor(props) {
         moviesList: [],
         date :'',
         times :'',
+        guest:'',
+        name :'',
+        mobile : '',
+        email : '',
+        status :'',
+      loading:'',
      
     }
   }
@@ -28,94 +34,109 @@ constructor(props) {
  _keyExtractor = (item, index) => item.id;
 
 
-  renderRowItem = (itemData) => {
-      
+  showLoading() {
+       this.setState({loading: true})
+    }
+
+    hideLoading() {
+       this.setState({loading: false})
+    }
+
+    componentDidMount() {
+      DeviceInfo.getUniqueID()
+    NetInfo.isConnected.addEventListener('connectionChange', this.handleConnectionChange);
+
+    NetInfo.isConnected.fetch().done(
+      (isConnected) => { this.setState({ status: isConnected }); }
+    );
+}
+componentWillUnmount() {
+    NetInfo.isConnected.removeEventListener('connectionChange', this.handleConnectionChange);
+}
+
+
+
+buttonClickListener = () =>{
+
+
+    if (this.state.name == ''){
+      alert('Please Enter Username')
+    } else if (this.state.email == ''){
+      alert('Please Enter Email')
+    }else if (this.state.mobile == ''){
+      alert('Please Enter Mobile')
+    }
+
+       else if (this.state.date == ''){
+      alert('Please Enter Date')
+    } else if (this.state.timesi == ''){
+      alert('Please Enter Time')
+    }else if (this.state.guest == ''){
+      alert('Please Enter Guest')
+    }
+
+
+      else if (this.state.status == false){
+      alert('Please Connect to Internet')
+    }  else {
+    
+      const url = GLOBAL.BASE_URL +  GLOBAL.booking_event
+      alert(url)
+      this.showLoading()
+      fetch(url, {
+
+
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    booking_date:this.state.name,
+  no_of_guest:this.state.guest,
+  time:this.state.times,
+  full_name:this.state.name,
+  mobile:this.state.mobile,
+  email:this.state.email,
+  foreign_id:GLOBAL.foreign_id,
+  user_id: GLOBAL.userid,
+  device_id: '',
+  device_token: '',
+  device_type: '',
+  loginTime: '',
+  model_name: '',
+  carrier_name: '',
+  device_country: '',
+  device_memory: '',
+  have_notch: '',
+  manufacture: ''
    
 
-
-    return (
-
-
- 
-
-      <View style={{ height : 195,  width : equalWidth ,margin : 10}}>
-
-
-        
-        
-      <Image
-          style={{ width: equalWidth, height : 195,margin :0 }}
-          source={{ uri: itemData.item.image }}
-
-        
-
-        />
-
-         <View style = {{position: 'absolute', right: 0,marginTop :5,backgroundColor :'#ce8c04',padding :5 ,borderTopLeftRadius : 10,borderTopLeftRadius : 10}}>
-      
-        <View style = {{flexDirection :'row'}}>
-       <Image style={{width :15,height:15 , resizeMode: 'contain'}}
-           source={require('./eventdate.png')} />
-
-      <Text style = {{marginLeft :3,color :'#ffffff' ,fontSize : 12}}>
-       {itemData.item.event_date }
-
-
-
-        </Text>
-        </View>
-
-           <View style = {{flexDirection :'row',marginTop :5}}>
-           <Image style={{width :15,height:15 , resizeMode: 'contain'}}
-           source={require('./eventtime.png')} />
-          <Text style = {{marginLeft : 3,color :'#ffffff' ,fontSize : 12}}>
-       {itemData.item.event_time }
-
-
-
-        </Text>
-        </View>
-
-        </View>
-       
-       <View style = {{marginTop : -40,height : 50,backgroundColor:'rgba(0,0,0,0.7)',flex : 1,flexDirection :'row'}}>
-       
-
-         
-
-
-       <Text style = {{margin : 5,color :'#ce8c04' ,fontSize : 20}}>
-       {itemData.item.title }
-
-
-
-        </Text>
-
-
-        <View style = {{position: 'absolute', right: 5,marginTop :5,backgroundColor :'#ce8c04',padding :3 ,borderRadius : 12}}>
-      <Text style = {{margin : 5,color :'#ffffff' ,fontSize : 12}}>
-       BOOK TABLE
-
-
-
-        </Text>
-        </View>
-
-        </View>
-
-       
-
-    
-         </View>
-
-
-      
-    
-   
+  }),
+}).then((response) => response.json())
+    .then((responseJson) => {
      
-    )
+      
+       this.hideLoading()
+       if (responseJson.status == true) {
+
+       alert('Your Table Book Successfully.')
+       }else {
+        alert('Unable to process your request Please try again after some time')
+       }
+    })
+    .catch((error) => {
+      console.error(error);
+       alert('Unable to process your request Please try again after some time')
+    });
+    }
   }
- 
+handleConnectionChange = (isConnected) => {
+        this.setState({ status: isConnected });
+        if (this.state.status == false){
+          alert('You are not Connected to Internet')
+        }
+        console.log(`is connected: ${this.state.status}`);
+}
 
   getMoviesFromApiAsync = () => {
       
@@ -150,6 +171,15 @@ constructor(props) {
  
 
   render() {
+    if(this.state.loading){
+      return(
+        <View style={{flex: 1}}>
+        <ActivityIndicator style = {styles.loading}
+
+       size="large" color="#ce8c04" />
+        </View>
+      )
+    }
     return (
      <View style={styles.container}>
     
@@ -218,6 +248,8 @@ constructor(props) {
            <TextInput style = {{width :width - 36,color :'white' ,fontSize : 18,marginLeft :18}}
           placeholder="Enter Number of Guest"
         placeholderTextColor={'white'}
+        keyboardType={"number-pad"}
+        onChangeText={(text) => this.setState({guest:text})}
           />
            </View>
 
@@ -228,7 +260,7 @@ constructor(props) {
           </Text>
          
           <View style={{ height:30, backgroundColor: 'transparent', marginLeft: 3 }}>
-            <DatePicker date={this.state.times} showIcon={false} placeholder="" mode="time" format="DD-MM-YYYY" confirmBtnText="Confirm"
+            <DatePicker date={this.state.times} showIcon={false} placeholder="" mode="time" format="hh.mm a" confirmBtnText="Confirm"
         cancelBtnText="Cancel"
               customStyles={{
                 dateInput: {
@@ -270,6 +302,7 @@ constructor(props) {
            <TextInput style = {{width :width - 36,color :'white' ,fontSize : 18,marginLeft :18}}
           placeholder="Enter Full Name"
         placeholderTextColor={'white'}
+        onChangeText={(text) => this.setState({name:text})}
           />
            </View>
 
@@ -283,6 +316,7 @@ constructor(props) {
            <TextInput style = {{width :width - 36,color :'white' ,fontSize : 18,marginLeft :18}}
           placeholder="Enter Mobile Number "
         placeholderTextColor={'white'}
+         onChangeText={(text) => this.setState({mobile:text})}
           />
            </View>
 
@@ -295,6 +329,7 @@ constructor(props) {
            <TextInput style = {{width :width - 36,color :'white' ,fontSize : 18,marginLeft :18}}
           placeholder="Enter Email "
         placeholderTextColor={'white'}
+        onChangeText={(text) => this.setState({email:text})}
           />
            </View>
 
@@ -303,7 +338,7 @@ constructor(props) {
            containerStyle={{margin : 10,padding:10, height:40, overflow:'hidden', borderRadius:10, backgroundColor: '#ce8c04'}}
    
             style={{fontSize: 14, color: 'white'}}
-         
+          onPress={this.buttonClickListener}
         >
        
          BOOK

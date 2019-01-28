@@ -20,6 +20,7 @@ constructor(props) {
     super(props)
     this.state = {
       isScreen :'',
+      myItem :[],
         moviesList: [],
         selectedTab:0,
      
@@ -41,74 +42,22 @@ constructor(props) {
 
     return (
 
-
- 
-
-      <View style={{ height : 195,  width : equalWidth ,margin : 10}}>
+        <View style = {{width : window.width,flexDirection :'column',backgroundColor :'rgba(0,0,0,0.5)'}} >
 
 
-        
-        
-      <Image
-          style={{ width: equalWidth, height : 195,margin :0 }}
-          source={{ uri: itemData.item.image }}
-
-        
-
-        />
-
-         <View style = {{position: 'absolute', right: 0,marginTop :5,backgroundColor :'#ce8c04',padding :5 ,borderTopLeftRadius : 10,borderTopLeftRadius : 10}}>
-      
-        <View style = {{flexDirection :'row'}}>
-       <Image style={{width :15,height:15 , resizeMode: 'contain'}}
-           source={require('./eventdate.png')} />
-
-      <Text style = {{marginLeft :3,color :'#ffffff' ,fontSize : 12}}>
-       {itemData.item.event_date }
+      <Text style = {{padding :5,marginLeft :3,color :'#ffffff' ,fontSize : 18}}>
+      {itemData.item.name}
 
 
 
         </Text>
-        </View>
-
-           <View style = {{flexDirection :'row',marginTop :5}}>
-           <Image style={{width :15,height:15 , resizeMode: 'contain'}}
-           source={require('./eventtime.png')} />
-          <Text style = {{marginLeft : 3,color :'#ffffff' ,fontSize : 12}}>
-       {itemData.item.event_time }
-
-
-
+        <Text style = {{padding :5,marginLeft :3,color :'#ffffff' ,fontSize : 9}}>
+      {itemData.item.description}
         </Text>
+        <View style = {{margin : 3 ,width :window.width ,height :1,backgroundColor :'rgba(255,255,255,0.4)'}}>
         </View>
+    </View>
 
-        </View>
-       
-       <View style = {{marginTop : -40,height : 50,backgroundColor:'rgba(0,0,0,0.7)',flex : 1,flexDirection :'row'}}>
-       
-       <Text style = {{margin : 5,color :'#ce8c04' ,fontSize : 20}}>
-       {itemData.item.title }
-
-
-
-        </Text>
-
-
-        <View style = {{position: 'absolute', right: 5,marginTop :5,backgroundColor :'#ce8c04',padding :3 ,borderRadius : 12}}>
-      <Text style = {{margin : 5,color :'#ffffff' ,fontSize : 12}}>
-       BOOK TABLE
-
-
-
-        </Text>
-        </View>
-
-        </View>
-
-       
-
-    
-         </View>
 
 
       
@@ -118,13 +67,26 @@ constructor(props) {
     )
   }
  componentWillMount() {
-      
+      this.getMoviesFromApiAsync()
     
+  }
+
+  resPress = (resId,resName) => {
+ 
+    Linking.canOpenURL(resId).then(supported => {
+      if (supported) {
+        Linking.openURL(resId);
+      } else {
+        console.log("Don't know how to open URI: " + resId);
+      }
+    });
+   
+  
   }
 
   getMoviesFromApiAsync = () => {
       
-       const url = 'http://139.59.76.223/test_api/index.php';
+      const url = GLOBAL.BASE_URL +  'menu'
      alert(url)
       fetch(url, {
   method: 'POST',
@@ -140,7 +102,7 @@ constructor(props) {
       alert(JSON.stringify(responseJson))
   
        this.setState({ moviesList: responseJson.data}) 
-      
+      this.setState({ myItem: responseJson.single_array})
       alert(JSON.stringify(responseJson))
       
     })
@@ -155,6 +117,7 @@ constructor(props) {
  
 
   render() {
+   
     return (
      <View style={styles.container}>
     
@@ -168,9 +131,9 @@ constructor(props) {
 
         <KeyboardAwareScrollView >
 
-    <SafeAreaView style={styles.container}>
+      <View style = {{width : window.width ,height :50 }}>
         <MaterialTabs
-          items={['Dinner', 'Cocktails', 'Wine & Beer']}
+          items= {this.state.myItem}
           selectedIndex={this.state.selectedTab}
           onChange={this.setTab}
           barColor="#000000"
@@ -178,7 +141,16 @@ constructor(props) {
           scrollable = {true}
           activeTextColor="white"
         />
-      </SafeAreaView>
+
+        </View>
+
+         <FlatList  
+          data= {this.state.moviesList[this.state.selectedTab]}
+          numColumns={1}
+          keyExtractor={this._keyExtractor}
+          renderItem={this.renderRowItem}
+        />
+      
         </KeyboardAwareScrollView>
       
        </View>

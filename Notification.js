@@ -33,29 +33,36 @@ constructor(props) {
 
     return (
 
-
+     <View style = {{padding:10,flex :1,flexDirection:'row',width :equalWidth,margin :10,backgroundColor : 'rgba(0,0,0,0.5)' }}>
  
 
-      <View style={{flex :1,flexDirection :'row', height : 150,  width : equalWidth ,margin : 10}}>
+       
 
 
         
         
       <Image
-          style={{ width: 150, height : 150,margin :0 }}
-          source={{ uri: itemData.item.image }}
+          style={{ width: 70, height : 70,margin :0 }}
+           source={require('./notificationa.png')} />
 
+<View style = {{flexDirection :'column',flex :1}}>
+        <Text  style = {{margin:3,width : width - 90,color :'white',marginTop : 8,fontSize :16 }}>
+         {itemData.item.title}
         
+        </Text>
 
-        />
-       
+         <Text  style = {{margin:3,width : width - 110,color :'white',marginTop : 8,fontSize :13 }}>
+         {itemData.item.message}
+        
+        </Text>
 
 
-        <Text  style = {{margin:3,width : width - 170,color :'white',marginTop : 14,fontSize :14 }}
-        numberOfLines={4} >After visiting an event listing, people most often open Google Images and YouTube. Why? They’re looking for photos and videos </Text>
-      
-       
+         <Text  style = {{margin:3,width : width - 90,color :'white',marginTop : 8,fontSize :10 }}>
+         {itemData.item.added_on}
+        
+        </Text>
 
+      </View>
       </View>
 
       
@@ -75,7 +82,7 @@ constructor(props) {
 
   getMoviesFromApiAsync = () => {
       
-       const url = 'http://139.59.76.223/test_api/index.php';
+        const url = GLOBAL.BASE_URL +  'notification'
      alert(url)
       fetch(url, {
   method: 'POST',
@@ -83,16 +90,15 @@ constructor(props) {
     'Content-Type': 'application/json',
   },
   body: JSON.stringify({
-    userID : '1'
+    user_id : GLOBAL.userid
     
   }),
 }).then((response) => response.json())
     .then((responseJson) => {
-      alert(JSON.stringify(responseJson))
-  
-       this.setState({ moviesList: responseJson.data}) 
+      alert(JSON.stringify(responseJson.notification))
+       this.setState({ moviesList: responseJson.notification}) 
       
-      alert(JSON.stringify(responseJson))
+     
       
     })
     .catch((error) => {

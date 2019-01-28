@@ -59,7 +59,7 @@ constructor(props) {
 
   getMoviesFromApiAsync = () => {
       
-       const url = 'http://139.59.76.223/test_api/index.php';
+        const url = GLOBAL.BASE_URL +  GLOBAL.photo_gallery
      alert(url)
       fetch(url, {
   method: 'POST',
@@ -67,14 +67,14 @@ constructor(props) {
     'Content-Type': 'application/json',
   },
   body: JSON.stringify({
-    userID : '1'
+    foreign_id : GLOBAL.foreign_id
     
   }),
 }).then((response) => response.json())
     .then((responseJson) => {
       alert(JSON.stringify(responseJson))
   
-       this.setState({ moviesList: responseJson.data}) 
+       this.setState({ moviesList: responseJson.gallery}) 
       
       alert(JSON.stringify(responseJson))
       

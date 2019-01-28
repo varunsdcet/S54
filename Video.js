@@ -8,7 +8,7 @@ import Container from './Container.js';
 const { width, height } = Dimensions.get('window');
 
 type Props = {};
-export default class TimeLine extends Component<Props> {
+export default class Video extends Component<Props> {
 constructor(){
     super()
    this.renderDetail = this.renderDetail.bind(this)
@@ -60,17 +60,20 @@ constructor(){
     
   }
 
-  
+  componentDidMount() {
+ 
+}
  
 componentWillMount() {
+
       this.getMoviesFromApiAsync()
     
   }
 
   getMoviesFromApiAsync = () => {
       
-      const url = GLOBAL.BASE_URL +  GLOBAL.photos
-     alert(url)
+      const url = GLOBAL.BASE_URL +  'video'
+   
       fetch(url, {
   method: 'POST',
   headers: {
@@ -82,11 +85,11 @@ componentWillMount() {
   }),
 }).then((response) => response.json())
     .then((responseJson) => {
-      alert(JSON.stringify(responseJson))
+      
   
        this.setState({ data: responseJson.data}) 
       
-      alert(JSON.stringify(responseJson))
+      
       
     })
     .catch((error) => {
@@ -96,16 +99,16 @@ componentWillMount() {
  }
 
 resPress = (resId,resName) => {
- 
+  window.EventBus.trigger('yourEventName', 'optional event info');
     GLOBAL.foreign_id =  resId
-   this.props.navigation.navigate('PhotoList')
+   this.props.navigation.navigate('VideoPlay')
   
   }
   
 
 renderRowItem = (itemData) => {
     return (
-    <TouchableOpacity   onPress={() => this.resPress(itemData.item.foreign_id, '')}>
+    <TouchableOpacity   onPress={() => this.resPress(itemData.item.link, '')}>
     <View style={{backgroundColor :'rgba(0,0,0,0.5)',flex :1,flexDirection :'column', height : width/3 - 20 ,  width : width/3 - 40 ,margin : 3}}>
 
 
@@ -113,13 +116,13 @@ renderRowItem = (itemData) => {
         
       <Image
           style={{width: width/3 - 40, height : width/3 - 40,margin :0}}
-          source={{ uri: itemData.item.image }}
+          source={{ uri: itemData.item.thumbnail }}
          
 
         />
 
 <Text style = {{ padding :5 ,color : 'white',fontSize : 10}}>
-{itemData.item.place_name}
+{itemData.item.name}
 </Text>
      
   </View>
@@ -132,7 +135,7 @@ renderRowItem = (itemData) => {
 renderDetail(rowData, sectionID, rowID) {
 
 
-  alert(rowData.movie)
+ 
    
 
  
@@ -141,7 +144,7 @@ renderDetail(rowData, sectionID, rowID) {
 
       <View style = {{flex : 1}}>
    <FlatList 
-          data={rowData.image_data}
+          data={rowData.data}
           numColumns={3}
         
           renderItem={this.renderRowItem}

@@ -4,15 +4,10 @@ import Video from 'react-native-video';
 const windows = Dimensions.get('window');
 import TimeLine from './TimeLine.js';
 const GLOBAL = require('./Global');
-var BackboneEvents = require('backbone-events-standalone');
-window.EventBus = BackboneEvents.mixin({});
+
 type Props = {};
 export default class Container extends Component {
-   static navigationOptions = ({ navigation }) => {
-    return {
-       header: () => null
-    } 
-}
+ 
 constructor(props) {
     super(props)
     this.state = {
@@ -29,31 +24,19 @@ constructor(props) {
 
 }
 
-componentDidMount() {
-  window.EventBus.on('yourEventName', this.yourEventHandlerFunc);
-   window.EventBus.on('yourEventName1', this.yourEventHandlerFunc1);
-}
-yourEventHandlerFunc = () =>{
 
-this.setState({
+componentWillUnmount(){
+  this.setState({
       paused: true
     });
-
-}
-
-yourEventHandlerFunc1 = () =>{
-
-this.setState({
-      paused: false
-    });
-
+  window.EventBus.trigger('yourEventName1', 'optional event info');
 }
 getProgress(e){
         this.setState({
             times: e.currentTime,
            
         })
-        GLOBAL.time = this.state.times;
+       
     }
 
 
@@ -67,7 +50,7 @@ getProgress(e){
     
       <View style={{ width: windows.width, height: windows.height, flexDirection: 'row' }}>
         <Video  
-          source={require('./corporate.mp4')}
+         source={{uri: GLOBAL.foreign_id}} 
           ref={(ref) => {
          this.player = ref
        }} 
@@ -77,13 +60,13 @@ getProgress(e){
           onLoad={() => {
 
           
-                          this.player.seek(GLOBAL.time);
+                         
                          
                           }} 
           muted={false}
          onProgress={ e => this.getProgress(e) }
-          repeat
-          resizeMode={"cover"}
+          false
+        
        
          
           style={styles.video}

@@ -2,11 +2,13 @@ import { createStackNavigator ,createAppContainer ,createDrawerNavigator} from '
 import Splash from './Splash.js';
 import Signup from './Signup.js';
 import Login from './Login.js';
+import Profile from './Profile.js';
 import TimeLine from './TimeLine.js';
 import Landing from './Landing.js';
 import Home from './Home.js';
 import Menu from './Menu.js';
-
+import Video from './Video.js';
+import Otp from './Otp.js';
 import Locations from './Locations.js';
 import Media from './Media.js';
 import BookTable from './BookTable.js';
@@ -15,6 +17,7 @@ import EventList from './EventList.js';
 import Notification from './Notification.js';
 import PhotoList from './PhotoList.js';
 import ZoomList from './ZoomList.js';
+import VideoPlay from './VideoPlay.js';
 import {NavigationActions} from 'react-navigation';
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View ,Button} from 'react-native';
@@ -27,7 +30,55 @@ const StackNavigator = createStackNavigator({
    Landing: { screen: Landing },
    Signup: { screen: Signup },
     Home: { screen: Home },
-   
+
+     Otp: { screen: Otp ,
+ navigationOptions: ({ navigation }) => ({
+   headerTintColor: '#ce8c04',
+     title: 'Enter Otp',
+      headerStyle: {
+      backgroundColor: 'black'
+
+    },
+ 
+  }),
+  },
+
+   Video: { screen: Video ,
+ navigationOptions: ({ navigation }) => ({
+   headerTintColor: '#ce8c04',
+     title: 'Video',
+      headerStyle: {
+      backgroundColor: 'black'
+
+    },
+ 
+  }),
+  },
+   VideoPlay: { screen: VideoPlay ,
+ navigationOptions: ({ navigation }) => ({
+   headerTintColor: '#ce8c04',
+     title: 'Video',
+      headerStyle: {
+      backgroundColor: 'black'
+
+    },
+ 
+  }),
+  },
+ 
+     Profile: { screen: Profile ,
+ navigationOptions: ({ navigation }) => ({
+   headerTintColor: '#ce8c04',
+     title: 'Profile',
+      headerStyle: {
+      backgroundColor: 'black'
+
+    },
+ 
+  }),
+  },
+
+
      Menu: { screen: Menu ,
  navigationOptions: ({ navigation }) => ({
  	 headerTintColor: '#ce8c04',

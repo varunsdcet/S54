@@ -24,7 +24,12 @@ constructor(props) {
   }
 
  _keyExtractor = (item, index) => item.id;
-
+ resPress = (resId,resName) => {
+ 
+   GLOBAL.foreign_id =  resId
+   this.props.navigation.navigate('BookTable')
+  
+  }
 
   renderRowItem = (itemData) => {
       
@@ -56,7 +61,7 @@ constructor(props) {
            source={require('./eventdate.png')} />
 
       <Text style = {{marginLeft :3,color :'#ffffff' ,fontSize : 12}}>
-       {itemData.item.event_date }
+       {itemData.item.start_date }
 
 
 
@@ -67,7 +72,7 @@ constructor(props) {
            <Image style={{width :15,height:15 , resizeMode: 'contain'}}
            source={require('./eventtime.png')} />
           <Text style = {{marginLeft : 3,color :'#ffffff' ,fontSize : 12}}>
-       {itemData.item.event_time }
+       {itemData.item.start_time }
 
 
 
@@ -79,7 +84,7 @@ constructor(props) {
        <View style = {{marginTop : -40,height : 50,backgroundColor:'rgba(0,0,0,0.7)',flex : 1,flexDirection :'row'}}>
        
        <Text style = {{margin : 5,color :'#ce8c04' ,fontSize : 20}}>
-       {itemData.item.title }
+       {itemData.item.event_name }
 
 
 
@@ -87,7 +92,9 @@ constructor(props) {
 
          
         <View style = {{position: 'absolute', right: 5,marginTop :5,backgroundColor :'#ce8c04',padding :3 ,borderRadius : 12}}>
-       <TouchableOpacity  onPress={() =>  this.props.navigation.navigate('BookTable')}>
+       
+        <TouchableOpacity   onPress={() => this.resPress(itemData.item.event_id, '')}>
+      
       <Text style = {{margin : 5,color :'#ffffff' ,fontSize : 12}}>
        BOOK TABLE
 
@@ -119,7 +126,7 @@ constructor(props) {
 
   getMoviesFromApiAsync = () => {
       
-       const url = 'http://139.59.76.223/test_api/index.php';
+       const url = GLOBAL.BASE_URL +  GLOBAL.get_event
      alert(url)
       fetch(url, {
   method: 'POST',
@@ -134,7 +141,7 @@ constructor(props) {
     .then((responseJson) => {
       alert(JSON.stringify(responseJson))
   
-       this.setState({ moviesList: responseJson.data}) 
+       this.setState({ moviesList: responseJson.event_list}) 
       
       alert(JSON.stringify(responseJson))
       

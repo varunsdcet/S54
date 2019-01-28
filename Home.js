@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { StyleSheet, Text, View ,Image,Alert,Dimensions ,TextInput,TouchableOpacity} from 'react-native';
+import { StyleSheet, Text, View ,Image,Alert,Dimensions,AsyncStorage ,TextInput,TouchableOpacity} from 'react-native';
 import Video from 'react-native-video';
 const window = Dimensions.get('window');
 import Container from './Container.js';
@@ -34,7 +34,75 @@ resPress = (resId,resName) => {
     this.props.navigation.navigate('Signup')
 };
 
+componentWillMount() {
+      this.getMoviesFromApiAsync()
+    
+  }
+
+ getMoviesFromApiAsync = () => {
+      
+      const url = GLOBAL.BASE_URL +  GLOBAL.get_settings
+     
+      fetch(url, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    userID : '1'
+    
+  }),
+}).then((response) => response.json())
+    .then((responseJson) => {
+     
+  
+      GLOBAL.longitude = parseFloat(responseJson.longitude) 
+      GLOBAL.latiude = parseFloat(responseJson.latitude) 
+      GLOBAL.address = responseJson.address
+      
+     
+      
+    })
+    .catch((error) => {
+      console.error(error);
+      
+    });
+ }
+
   render() {
+    var value =  AsyncStorage.getItem('userID');
+    value.then((e)=>{
+      GLOBAL.userid = e
+      alert(GLOBAL.userid)
+    }) 
+
+
+     var valued =  AsyncStorage.getItem('name');
+    valued.then((e)=>{
+      GLOBAL.name = e
+      alert(GLOBAL.userid)
+    }) 
+
+
+     var valuedd =  AsyncStorage.getItem('email');
+    valuedd.then((e)=>{
+      GLOBAL.email = e
+      alert(GLOBAL.userid)
+    }) 
+
+
+     var values =  AsyncStorage.getItem('mobile');
+    values.then((e)=>{
+      GLOBAL.mobile = e
+      alert(GLOBAL.userid)
+    }) 
+
+
+     var valu =  AsyncStorage.getItem('image');
+    valu.then((e)=>{
+      GLOBAL.image = e
+      alert(GLOBAL.userid)
+    }) 
     return (
       <View style={styles.container}>
     
@@ -45,12 +113,12 @@ resPress = (resId,resName) => {
 
           
         <View style={styles.content}>
-
+           <Image style={styles.logoImage1}
+           source={require('./logo.png')} />
         <KeyboardAwareScrollView >
 
-         <Image style={styles.logoImage1}
-           source={require('./logo.png')} />
-
+        
+            <TouchableOpacity  onPress={() =>  this.props.navigation.navigate('Profile')}>
            <View style = {{marginLeft :window.width - 90,height : 90 ,width :90 }}>
            <Image style={{marginLeft : 30,marginTop : 30,width :25,height:25 , resizeMode: 'contain'}}
            source={require('./profile.png')} />
@@ -61,6 +129,7 @@ resPress = (resId,resName) => {
            </Text>
 
            </View>
+            </TouchableOpacity>
 
              <TouchableOpacity  onPress={() =>  this.props.navigation.navigate('EventList')}>
            <View style = {{marginLeft :window.width - 90,height : 90 ,width :90 }}>
@@ -86,7 +155,7 @@ resPress = (resId,resName) => {
 
            </View>
             </TouchableOpacity>
-
+         <TouchableOpacity  onPress={() =>  this.props.navigation.navigate('Video')}>
            <View style = {{marginLeft :window.width - 90,height : 90 ,width :90 }}>
            <Image style={{marginLeft : 30,marginTop : 30,width :25,height:25 , resizeMode: 'contain'}}
            source={require('./video.png')} />
@@ -97,7 +166,7 @@ resPress = (resId,resName) => {
            </Text>
 
            </View>
-
+           </TouchableOpacity>
           <TouchableOpacity  onPress={() =>  this.props.navigation.navigate('Notification')}>
            <View style = {{marginLeft :window.width - 90,height : 90 ,width :90 }}>
            <Image style={{marginLeft : 30,marginTop : 30,width :25,height:25 , resizeMode: 'contain'}}
